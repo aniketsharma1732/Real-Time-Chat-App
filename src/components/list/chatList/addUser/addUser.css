@@ -1,0 +1,165 @@
+.addUser {
+  padding: 20px;
+  width: max-content;
+  height: max-content;
+  background-color: rgba(17, 25, 40, 0.899);
+  border-radius: 10px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  form {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+
+    input {
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      min-width: 180px;
+    }
+
+    button,
+    .cancelBtn {
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button {
+      background-color: #1a73e8;
+
+      &:hover {
+        background-color: #1669c1;
+      }
+    }
+
+    .cancelBtn {
+      background-color: #555;
+
+      &:hover {
+        background-color: #444;
+      }
+    }
+  }
+
+  .user {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    .detail {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+
+      img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }
+
+    button {
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #1669c1;
+      }
+    }
+  }
+}
+
+.popup-content {
+  background-color: #1f2a38;
+  padding: 20px 25px;
+  margin-left: 1rem;
+  border-radius: 12px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  max-width: 90%;
+  width: 350px;
+
+  button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+
+    &:hover {
+      background-color: #1669c1;
+    }
+  }
+}
+
+.button-group button {
+  margin-right: 1rem;
+}
+
+@media (max-width: 600px) {
+  .addUser {
+    width: 90%;
+    padding: 15px;
+
+    form {
+      flex-direction: column;
+      gap: 12px;
+
+      input {
+        width: 100%;
+      }
+
+      .button-group {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+
+        button {
+          width: 48%;
+        }
+      }
+    }
+
+    .user {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 5px;
+    }
+  }
+
+  .popup-content {
+    width: 90%;
+    padding: 20px;
+    border-radius: 12px;
+
+    button {
+      font-size: 1rem;
+      padding: 10px;
+    }
+  }
+}

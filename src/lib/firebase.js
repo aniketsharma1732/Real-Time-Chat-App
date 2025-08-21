@@ -7,7 +7,7 @@ const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain: "reactchat-c36fb.firebaseapp.com",
   projectId: "reactchat-c36fb",
-  storageBucket: "reactchat-c36fb.appspot.com",  // ✅ fix typo here too
+  storageBucket: "reactchat-c36fb.firebasestorage.app",  // ✅ fix typo here too
   messagingSenderId: "797681833049",
   appId: "1:797681833049:web:699d7e675cf8ac2149cd48"
 };

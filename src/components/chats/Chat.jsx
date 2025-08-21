@@ -17,11 +17,39 @@ const Chat = ({ setActiveSection }) => {
     const [chat, setChat] = useState(null);
     const [open, setOpen] = useState(false);
     const [text, setText] = useState("");
-    const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } = useChatStore();
+    const { chatId, user } = useChatStore();
     const { currentUser } = useUserStore();
     const [img, setImg] = useState({ file: null, url: "" });
     const endRef = useRef(null);
     const [zoomedImage, setZoomedImage] = useState(null);
+
+    // 🔴 local block states that will be updated in real-time
+    const [isCurrentUserBlocked, setIsCurrentUserBlocked] = useState(false);
+    const [isReceiverBlocked, setIsReceiverBlocked] = useState(false);
+
+    // 🔴 Real-time listener for block changes
+    useEffect(() => {
+        if (!currentUser || !user) return;
+
+        const unsub = onSnapshot(doc(db, "users", currentUser.id), (docSnap) => {
+            if (docSnap.exists()) {
+                const blocked = docSnap.data().blocked || [];
+                setIsReceiverBlocked(blocked.includes(user.id));
+            }
+        });
+
+        const unsubOther = onSnapshot(doc(db, "users", user.id), (docSnap) => {
+            if (docSnap.exists()) {
+                const blocked = docSnap.data().blocked || [];
+                setIsCurrentUserBlocked(blocked.includes(currentUser.id));
+            }
+        });
+
+        return () => {
+            unsub();
+            unsubOther();
+        };
+    }, [currentUser, user]);
 
     useEffect(() => {
         if (!chatId) return;
@@ -54,7 +82,7 @@ const Chat = ({ setActiveSection }) => {
     };
 
     const handleSend = async () => {
-        if (text.trim() === "") return;
+        if (text.trim() === "" || isCurrentUserBlocked || isReceiverBlocked) return;
 
         let imgUrl = null;
 
@@ -160,17 +188,6 @@ const Chat = ({ setActiveSection }) => {
             </div>
 
             <div className="bottom">
-                {/* <div className="icons">
-                    <label htmlFor="fileUpload">
-                        <img src="./img.png" alt="Upload" />
-                    </label>
-                    <input
-                        type="file"
-                        id="fileUpload"
-                        style={{ display: "none" }}
-                        onChange={handleImg}
-                    />
-                </div> */}
                 <input
                     type="text"
                     placeholder={isCurrentUserBlocked || isReceiverBlocked ? "you cannot send a message" : "Type a message..."}
@@ -188,7 +205,6 @@ const Chat = ({ setActiveSection }) => {
                 </button>
             </div>
 
-            {/* Fullscreen Zoom Image Modal */}
             {zoomedImage && (
                 <div className="imageModal">
                     <span className="closeBtn" onClick={() => setZoomedImage(null)}>×</span>

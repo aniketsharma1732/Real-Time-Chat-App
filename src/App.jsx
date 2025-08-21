@@ -14,7 +14,6 @@ const App = () => {
   const { chatId } = useChatStore();
   const [activeSection, setActiveSection] = useState("chatList");
 
-  // Fetch user info on auth state change
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {
       fetchUserInfo(user?.uid);
@@ -22,15 +21,19 @@ const App = () => {
     return () => unSub();
   }, [fetchUserInfo]);
 
-  // Toggle body background for mobile chat view
   useEffect(() => {
-    if (window.innerWidth <= 768) {
-      if (chatId) {
-        document.body.classList.add("chat-open-mobile");
-      } else {
-        document.body.classList.remove("chat-open-mobile");
+    const updateBodyClass = () => {
+      if (window.innerWidth <= 768) {
+        if (chatId) {
+          document.body.classList.add("chat-open-mobile");
+        } else {
+          document.body.classList.remove("chat-open-mobile");
+        }
       }
-    }
+    };
+    updateBodyClass();
+    window.addEventListener("resize", updateBodyClass);
+    return () => window.removeEventListener("resize", updateBodyClass);
   }, [chatId]);
 
   if (isLoading) return <div className="loading">Loading...</div>;
@@ -45,7 +48,7 @@ const App = () => {
           {(activeSection === "chat" || window.innerWidth > 768) && chatId && (
             <Chat setActiveSection={setActiveSection} />
           )}
-          {chatId && (window.innerWidth > 768 || activeSection === "detail") && (
+          {(chatId && (window.innerWidth > 768 || activeSection === "detail")) && (
             <Detail setActiveSection={setActiveSection} />
           )}
         </>

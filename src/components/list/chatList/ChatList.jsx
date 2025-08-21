@@ -14,22 +14,24 @@ const ChatList = ({ setActiveSection }) => {
   const { changeChat } = useChatStore();
 
   useEffect(() => {
+    if (!currentUser?.id) return;
+
     const unSub = onSnapshot(doc(db, "userchats", currentUser.id), async (res) => {
       const items = res.data()?.chats || [];
 
       const promises = items.map(async (item) => {
         const userDocRef = doc(db, "users", item.receiverId);
         const userDocSnap = await getDoc(userDocRef);
-        const user = userDocSnap.data();
+        const user = userDocSnap.exists() ? userDocSnap.data() : null;
         return { ...item, user };
       });
 
       const chatData = await Promise.all(promises);
-      setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
+      setChats(chatData.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)));
     });
 
     return () => unSub();
-  }, [currentUser.id]);
+  }, [currentUser?.id]);
 
   const handleSelect = async (chat) => {
     const userChats = chats.map(({ user, ...rest }) => rest);
@@ -52,14 +54,13 @@ const ChatList = ({ setActiveSection }) => {
       if (window.innerWidth <= 768 && setActiveSection) {
         setActiveSection("chat");
       }
-
     } catch (err) {
       console.log(err);
     }
   };
 
   const filteredChats = chats.filter(c =>
-    c.user.username.toLowerCase().includes(input.toLowerCase())
+    c.user?.username?.toLowerCase().includes(input.toLowerCase())
   );
 
   return (
@@ -90,19 +91,19 @@ const ChatList = ({ setActiveSection }) => {
         >
           <img
             src={
-              chat.user.blocked.includes(currentUser.id)
+              chat.user?.blocked?.includes(currentUser.id)
                 ? "./avatar.png"
-                : chat.user.avatar || "./avatar.png"
+                : chat.user?.avatar || "./avatar.png"
             }
             alt=""
           />
           <div className="texts">
             <span>
-              {chat.user.blocked.includes(currentUser.id)
+              {chat.user?.blocked?.includes(currentUser.id)
                 ? "User"
-                : chat.user.username}
+                : chat.user?.username || "Unknown"}
             </span>
-            <p>{chat.lastMessage}</p>
+            <p>{chat.lastMessage || ""}</p>
           </div>
         </div>
       ))}

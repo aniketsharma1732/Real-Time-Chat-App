@@ -17,7 +17,7 @@ body,
   align-items: center;
   justify-content: center;
   color: white;
-  height: 100vh;
+  height: 100dvh;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -27,7 +27,7 @@ body,
 .container {
 
   width: 90vw;
-  height: 90vh;
+  height: 90dvh;
   background-color: rgba(17, 25, 40, 0.75);
   backdrop-filter: blur(19px) saturate(180%);
   border-radius: 12px;
@@ -46,7 +46,7 @@ body,
 @media (max-width: 768px) {
   .container {
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     border-radius: 0;
 
   }

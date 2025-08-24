@@ -21,9 +21,9 @@ const Chat = ({ setActiveSection }) => {
     const { currentUser } = useUserStore();
     const [img, setImg] = useState({ file: null, url: "" });
     const endRef = useRef(null);
+    const inputRef = useRef(null);
     const [zoomedImage, setZoomedImage] = useState(null);
 
-    // 🔴 local block states that will be updated in real-time
     const [isCurrentUserBlocked, setIsCurrentUserBlocked] = useState(false);
     const [isReceiverBlocked, setIsReceiverBlocked] = useState(false);
 
@@ -66,6 +66,13 @@ const Chat = ({ setActiveSection }) => {
             endRef.current?.scrollIntoView({ behavior: "smooth" });
         }
     }, [chat?.messages?.length]);
+
+    // 👇 Keep input focused after clearing text
+    useEffect(() => {
+        if (text === "") {
+            inputRef.current?.focus();
+        }
+    }, [text]);
 
     const handleEmoji = (e) => {
         setText((prev) => prev + e.emoji);
@@ -123,7 +130,7 @@ const Chat = ({ setActiveSection }) => {
                 }
             });
 
-            setText("");
+            setText(""); // clears input but keeps focus (useEffect above handles focus)
             setImg({ file: null, url: "" });
         } catch (err) {
             console.log("Error sending message:", err);
@@ -189,18 +196,33 @@ const Chat = ({ setActiveSection }) => {
 
             <div className="bottom">
                 <input
+                    ref={inputRef}
                     type="text"
                     placeholder={isCurrentUserBlocked || isReceiverBlocked ? "you cannot send a message" : "Type a message..."}
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     onKeyDown={(e) => {
                         if (e.key === "Enter" && !isCurrentUserBlocked && !isReceiverBlocked) {
+                            e.preventDefault(); // prevent blur
                             handleSend();
+                            setTimeout(() => {
+                                inputRef.current?.focus();
+                            }, 0);
                         }
+                    }}
+                    onBlur={(e) => {
+                        // prevent blur from hiding keyboard
+                        e.preventDefault();
+                        inputRef.current?.focus();
                     }}
                     disabled={isCurrentUserBlocked || isReceiverBlocked}
                 />
-                <button className="sendButton" onClick={handleSend} disabled={isCurrentUserBlocked || isReceiverBlocked}>
+                <button
+                    type="button" // 👈 prevents button from stealing focus
+                    className="sendButton"
+                    onClick={handleSend}
+                    disabled={isCurrentUserBlocked || isReceiverBlocked}
+                >
                     Send
                 </button>
             </div>

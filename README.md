@@ -12,7 +12,6 @@ A sleek, modern, and responsive real-time chat application built with **React**,
 - 🧠 State management using Zustand
 - 🧊 Block/unblock users functionality
 - 📱 Fully responsive UI
-
 ---
 
 ## 🛠️ Tech Stack

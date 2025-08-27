@@ -3,7 +3,6 @@
 A sleek, modern, and responsive real-time chat application built with **React**, **Firebase**, and **Zustand**. This app allows users to register, log in, search for other users, and chat instantly with real-time updates.
 
 ---
-
 ## 🚀 Features
 
 - 🔥 Real-time messaging with Firebase Firestore

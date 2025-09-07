@@ -4,7 +4,6 @@ A sleek, modern, and responsive real-time chat application built with **React**,
 
 ---
 ## 🚀 Features
-
 - 🔥 Real-time messaging with Firebase Firestore
 - 📸 Support for sending images
 - 👤 User authentication with Firebase Auth

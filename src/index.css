@@ -1,0 +1,54 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+html,
+body,
+#root {
+  
+  background-image: url("/public/bg4.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+}
+
+.container {
+
+  width: 90vw;
+  height: 90dvh;
+  background-color: rgba(17, 25, 40, 0.75);
+  backdrop-filter: blur(19px) saturate(180%);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  display: flex;
+}
+
+.loading {
+  padding: 50px;
+  font-size: 36px;
+  border-radius: 10px;
+  background-color: rgba(17, 25, 40, 0.9);
+
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+
+  }
+}

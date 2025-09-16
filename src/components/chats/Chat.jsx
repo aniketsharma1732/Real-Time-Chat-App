@@ -203,20 +203,16 @@ const Chat = ({ setActiveSection }) => {
                     onChange={(e) => setText(e.target.value)}
                     onKeyDown={(e) => {
                         if (e.key === "Enter" && !isCurrentUserBlocked && !isReceiverBlocked) {
-                            e.preventDefault(); // prevent blur
+                            e.preventDefault();
                             handleSend();
                             setTimeout(() => {
                                 inputRef.current?.focus();
                             }, 0);
                         }
                     }}
-                    onBlur={(e) => {
-                        // prevent blur from hiding keyboard
-                        e.preventDefault();
-                        inputRef.current?.focus();
-                    }}
                     disabled={isCurrentUserBlocked || isReceiverBlocked}
                 />
+
                 <button
                     type="button" // 👈 prevents button from stealing focus
                     className="sendButton"
